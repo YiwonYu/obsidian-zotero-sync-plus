@@ -12,11 +12,13 @@ export class ZoteroApiClient {
   private readonly baseUrl: string;
   private readonly prefix: string;
   private readonly apiKey?: string;
+  private readonly localRequest: boolean;
 
   constructor(options: ZoteroApiClientOptions) {
     this.baseUrl = (options.endpoint ?? 'https://api.zotero.org').replace(/\/$/u, '');
     this.prefix = `${options.libraryType === 'group' ? 'groups' : 'users'}/${options.libraryId}`;
     this.apiKey = options.apiKey || undefined;
+    this.localRequest = /^https?:\/\/(127\.0\.0\.1|localhost)(?::|\/|$)/u.test(this.baseUrl);
   }
 
   async getTopLevelItems(): Promise<unknown[]> {
@@ -79,6 +81,7 @@ export class ZoteroApiClient {
   private headers(): Record<string, string> {
     const headers: Record<string, string> = { 'Zotero-API-Version': '3' };
     if (this.apiKey) headers['Zotero-API-Key'] = this.apiKey;
+    if (this.localRequest) headers['Zotero-Allowed-Request'] = '1';
     return headers;
   }
 }

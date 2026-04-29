@@ -36,6 +36,83 @@ Do not commit or publish your personal API key. It belongs only in your local Ob
 
 The Zotero API is recommended because it exposes Zotero-specific metadata such as item keys, tags, collections, child notes, attachments, and annotation items.
 
+## Local Zotero API setup
+
+If Web API sync feels slow, you can use Zotero Desktop's local API. Zotero Desktop must be running while you sync.
+
+### Enable Zotero local API
+
+In Zotero Desktop:
+
+1. Open Zotero settings.
+   - macOS: **Zotero → Settings…**
+   - Windows/Linux: **Edit → Settings…**
+2. Go to **Advanced**.
+3. Enable the option that allows local app communication. The wording may vary by Zotero version, but it is usually similar to:
+
+   ```txt
+   Allow other applications on this computer to communicate with Zotero
+   ```
+
+   or:
+
+   ```txt
+   Enable local API / Enable HTTP server
+   ```
+
+4. Restart Zotero if the endpoint does not respond immediately.
+
+### Find the local library ID
+
+Do not guess the local library ID. Ask Zotero's local API which ID it accepts.
+
+Run this in a terminal while Zotero Desktop is open:
+
+```bash
+curl -H 'Zotero-Allowed-Request: 1' \
+  'http://127.0.0.1:23119/api/users/local/items/top?limit=1&format=json'
+```
+
+If Zotero replies with something like:
+
+```txt
+Only data for the logged-in user is available locally -- use userID 0 or 14633680
+```
+
+then your local user library ID is one of the values shown. Usually `0` works for local-only access, and the larger number is your Zotero account user ID. Test them:
+
+```bash
+curl -H 'Zotero-Allowed-Request: 1' \
+  'http://127.0.0.1:23119/api/users/0/items/top?limit=1&format=json'
+
+curl -H 'Zotero-Allowed-Request: 1' \
+  'http://127.0.0.1:23119/api/users/YOUR_USER_ID/items/top?limit=1&format=json'
+```
+
+Use whichever returns JSON.
+
+### Obsidian plugin settings for local API
+
+In **Settings → Zotero Sync Plus**:
+
+```txt
+Data source mode: localApi
+Zotero local API endpoint: http://127.0.0.1:23119/api
+Zotero library type: user
+Zotero library ID: 0
+```
+
+If `0` does not work, use the numeric user ID returned by the curl check.
+
+Then click **Test Zotero Connection**.
+
+### Common local API messages
+
+- `No endpoint found`: you opened the root path, such as `http://127.0.0.1:23119/api`. This is not a real item endpoint. Use `/api/users/<id>/items/top`.
+- `Request not allowed`: the request is missing Zotero's local API safety header. The plugin sends `Zotero-Allowed-Request: 1` automatically for `localhost` and `127.0.0.1`; browser address bars do not. Use the curl examples above for manual testing.
+- `Local API is not enabled`: enable local app communication in Zotero Desktop settings.
+- `Only data for the logged-in user is available locally -- use userID ...`: replace the plugin's library ID with `0` or the numeric user ID shown by Zotero.
+
 ## Optional Better BibTeX setup
 
 Better BibTeX is optional. It is useful for stable citation keys and bibliography generation.
