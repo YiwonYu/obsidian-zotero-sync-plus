@@ -14,7 +14,7 @@
     "citation",
     "sync"
   ],
-  "author": "",
+  "author": "raffin",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "latest",

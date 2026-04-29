@@ -46,3 +46,11 @@ This file records implementation verification evidence.
 
 - `npm test && npm run build`: **passed** after the cleanup pass.
 - `grep -R "TODO\|FIXME\|placeholder" -n src tests README.md verify/VERIFY.md`: **no matches**.
+
+
+## Release-readiness update
+
+- Added public release guidance to `README.md`, including Zotero API key/library ID setup at <https://www.zotero.org/settings/security>.
+- Added `LICENSE` and `versions.json`.
+- Updated `manifest.json` plugin ID to `zotero-sync-plus` because Obsidian community plugin IDs cannot contain `obsidian`.
+- Re-ran `npm test && npm run build`: **passed**.

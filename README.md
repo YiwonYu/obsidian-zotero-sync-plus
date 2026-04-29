@@ -20,12 +20,19 @@ Zotero is the source of truth. Obsidian markdown files are local representations
 
 For full sync, configure the Zotero Web API:
 
-1. Create a Zotero API key from your Zotero account settings.
-2. In plugin settings, choose `zoteroApi`.
-3. Set library type (`user` or `group`).
-4. Set library ID.
-5. Paste the API key.
-6. Use **Test Zotero Connection**.
+1. Sign in to Zotero and open <https://www.zotero.org/settings/security>.
+2. Under API keys, create a new private key for this plugin. Give it read access to the Zotero library you want to sync.
+3. Copy the generated API key immediately; Zotero may not show the full key again later.
+4. Find your Zotero library ID:
+   - For a user library, use the numeric user/library ID shown in your Zotero settings/API key page.
+   - For a group library, open the Zotero group page and use the numeric group ID from the group URL/settings.
+5. In Obsidian, open **Settings → Zotero Sync Plus**.
+6. Set **Data source mode** to `zoteroApi`.
+7. Set **Zotero library type** to `user` or `group`.
+8. Paste the **Zotero library ID** and **Zotero API key**.
+9. Click **Test Zotero Connection** before running your first sync.
+
+Do not commit or publish your personal API key. It belongs only in your local Obsidian plugin settings.
 
 The Zotero API is recommended because it exposes Zotero-specific metadata such as item keys, tags, collections, child notes, attachments, and annotation items.
 
@@ -150,6 +157,52 @@ Settings cover:
 - Obsidian `processFrontMatter` preserves unrelated fields but may reformat YAML comments/quoting.
 - Local export mode depends on the selected JSON file containing the needed fields.
 - v1 is one-way only and never modifies Zotero.
+
+## Releasing to GitHub and the Obsidian community plugin directory
+
+Before submitting, review the official Obsidian guide: <https://docs.obsidian.md/Plugins/Releasing/Submit%20your%20plugin>.
+
+Important naming note: the GitHub repository may be named `obsidian-zotero-sync-plus`, but Obsidian community plugin IDs cannot contain `obsidian`. This plugin therefore uses the manifest ID `zotero-sync-plus`. The `id` in `manifest.json` must exactly match the `id` you add to `community-plugins.json`.
+
+Release checklist:
+
+1. Confirm the repository root contains:
+   - `README.md`
+   - `LICENSE`
+   - `manifest.json`
+   - `versions.json`
+2. Update `manifest.json` to the release version, for example `1.0.0`. Obsidian requires semantic versions in `x.y.z` format.
+3. If `minAppVersion` changes, update `versions.json` with the plugin version and compatible Obsidian version.
+4. Build the plugin:
+
+   ```bash
+   npm install
+   npm test
+   npm run build
+   ```
+
+5. Create a GitHub release whose tag exactly matches `manifest.json` `version`. For example, if the manifest version is `1.0.0`, use tag `1.0.0`, not `v1.0.0`.
+6. Upload these release assets as individual files:
+   - `main.js`
+   - `manifest.json`
+   - `styles.css` if you add one later
+7. Fork <https://github.com/obsidianmd/obsidian-releases>.
+8. Add an entry to the end of `community-plugins.json`:
+
+   ```json
+   {
+     "id": "zotero-sync-plus",
+     "name": "Zotero Sync Plus",
+     "author": "raffin",
+     "description": "One-way Zotero to Obsidian sync for papers, collections, tags, notes, annotations, citations, and bibliographies.",
+     "repo": "YOUR-GITHUB-USERNAME/obsidian-zotero-sync-plus"
+   }
+   ```
+
+9. Open a pull request titled `Add plugin: Zotero Sync Plus`. In the PR template, switch to **Preview**, choose **Community Plugin**, and complete the checklist.
+10. Wait for the validation bot. If it adds **Validation failed**, fix the listed issues and update the same PR/release. If it adds **Ready for review**, wait for Obsidian team review.
+
+After the plugin is accepted, future updates are distributed by creating new GitHub releases with tags matching the updated `manifest.json` version. You do not need to submit a new PR for every update.
 
 ## Development
 
