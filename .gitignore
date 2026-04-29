@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+
+# Build outputs / generated bundles
+# Keep source in src/ as canonical. For releases, build main.js separately or attach it to GitHub releases.
+main.js
+main.js.map
+*.map
+
+# Package manager / tool caches
+.npm/
+.pnpm-store/
+.yarn/
+.vite/
+.esbuild/
+.turbo/
+coverage/
+.nyc_output/
+dist/
+build/
+.cache/
+.tmp/
+tmp/
+
+# Local Obsidian vault/plugin state
+.obsidian/
+*.canvas~
+
+# oh-my-codex / local agent runtime state
+.omx/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+secrets.*
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# TypeScript incremental state
+*.tsbuildinfo

@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-zotero-sync-plus",
+  "name": "Zotero Sync Plus",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "One-way Zotero to Obsidian integration for papers, collections, tags, notes, annotations, citations, and bibliographies.",
+  "author": "",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}

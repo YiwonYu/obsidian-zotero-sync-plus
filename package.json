@@ -1,0 +1,27 @@
+{
+  "name": "obsidian-zotero-sync-plus",
+  "version": "0.1.0",
+  "description": "One-way Zotero to Obsidian synchronization plugin.",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "dev": "node esbuild.config.mjs",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "obsidian",
+    "zotero",
+    "citation",
+    "sync"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "latest",
+    "builtin-modules": "latest",
+    "esbuild": "latest",
+    "obsidian": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}
